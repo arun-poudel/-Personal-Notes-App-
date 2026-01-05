@@ -1,0 +1,29 @@
+{
+  "name": "project2",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/arun-poudel/-Personal-Notes-App-#readme",
+  "bugs": {
+    "url": "https://github.com/arun-poudel/-Personal-Notes-App-/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arun-poudel/-Personal-Notes-App-.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3"
+  }
+}
