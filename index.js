@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import pool, { initDB } from "./db.js";
-
+import { count } from "console";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -34,6 +34,54 @@ app.post("/notes", async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+// Get notes (with Search , Filter, and Pagination)
+
+app.get("/notes", async (req, res) => {
+  try {
+    let { search, category, page = 1, limit = 10 } = req.query;
+
+    const offset = (page - 1) * limit;
+    let queryText = "SELECT * FROM notes WHERE 1=1";
+    let values = [];
+    let placeholderIdx = 1;
+
+    // Add search functionality
+
+    if (search) {
+      queryText += ` AND (title ILIKE $${placeholderIdx} OR content ILIKE $${placeholderIdx})`;
+      values.push(`%${search}%`);
+      placeholderIdx++;
+    }
+
+    // Add category Filter
+
+    if (category) {
+      queryText += `AND category = $${placeholderIdx}`;
+      values.push(category);
+      placeholderIdx++;
+    }
+    
+    queryText += `ORDER BY created_at DESC LIMIT $${placeholderIdx} OFFSET $${placeholderIdx + 1}`;
+    values.push(limit, offset);
+
+
+    const result = await pool.query(queryText, values);
+    res.json({
+      page: parseInt(page),
+      count: result.rowCount,
+      notes:result.rows
+    })
+
+
+
+
+  } catch (err) {
+    console.error();
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+
 });
 
 app.listen(PORT, () => {
