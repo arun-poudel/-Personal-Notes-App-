@@ -58,12 +58,12 @@ app.get("/notes", async (req, res) => {
     // Add category Filter
 
     if (category) {
-      queryText += `AND category = $${placeholderIdx}`;
+      queryText += ` AND category = $${placeholderIdx}`;
       values.push(category);
       placeholderIdx++;
     }
     
-    queryText += `ORDER BY created_at DESC LIMIT $${placeholderIdx} OFFSET $${placeholderIdx + 1}`;
+    queryText += ` ORDER BY created_at DESC LIMIT $${placeholderIdx} OFFSET $${placeholderIdx + 1}`;
     values.push(limit, offset);
 
 
